@@ -807,6 +807,9 @@ class OctopusEnergyApiClient:
       except TimeoutError:
         _LOGGER.warning(f'Failed to connect. Timeout of {self._timeout} exceeded.')
         raise TimeoutException()
+      except aiohttp.ClientConnectionError:
+        _LOGGER.warning('Failed to connect while refreshing token.')
+        raise TimeoutException()
 
   async def __async_fetch_token(self):
     client = self._create_client_session()
